@@ -1,0 +1,14 @@
+{"Яичница": [{"quantity_ingredient": 2},
+             {"ingredient_name": "Яйца", "quantity": 2, "measure": "шт"},
+             {"ingredient_name": "Помидоры", "quantity": 100, "measure": "гр"}],
+
+ "Стейк": [{"quantity_ingredient": 3}, 
+           {"ingredient_name": "Говядина", "quantity": 300, "measure": "гр"},
+           {"ingredient_name": "Специи", "quantity": 5, "measure": "гр"},    
+           {"ingredient_name": "Масло", "quantity": 10, "measure": "мл"}],
+
+ "Салат": [{"quantity_ingredient": 4},
+          {"ingredient_name": "Помидоры", "quantity": 100, "measure": "гр"},
+          {"ingredient_name": "Огурцы", "quantity": 100, "measure": "гр"},    
+          {"ingredient_name": "Масло", "quantity": 100, "measure": "мл"},
+          {"ingredient_name": "Лук", "quantity": 1, "measure": "шт"}]}
