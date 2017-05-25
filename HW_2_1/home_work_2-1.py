@@ -9,7 +9,10 @@ def create_cook_book():       # Создаёт из текстового фай�
             quantity_ingredient = int(f.readline())
             ingredient_list = []
             for i in range(quantity_ingredient):
-                parameters_ingredient_list = f.readline().lower().strip().split('|')
+                parameters_ingredient_list = []
+                parameters_ingredient_list_ = f.readline().lower().strip().split('|')
+                for ing in parameters_ingredient_list_:
+                    parameters_ingredient_list.append(ing.strip())
                 parameters_ingredient_list[1] = int(parameters_ingredient_list[1])
                 ingredients = dict(zip(parameters_keys_list, parameters_ingredient_list))
                 ingredient_list.append(ingredients)
@@ -44,9 +47,3 @@ def create_shop_list():
     print_shop_list(shop_list)
 
 create_shop_list()
-
-
-
-# Форматы данных json, xml, yaml используются для хранения и обмена данными. JSON по сравнения с xml более
-# компактный и удобочитаемый. Его синтаксис напоминает запись объектов в Python. YAML по сравнению с xml тоже более
-# минималистичен и удобочитаем. Используется для хранения настроек компьютерных программ, операционных систем.
