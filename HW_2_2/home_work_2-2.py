@@ -1,7 +1,8 @@
 import json
 
+
 def create_cook_book():
-    with open('coo_book.jsn') as f:
+    with open('coo_book.json') as f:
         cook_book = json.load(f)
     cook_book_new = dict()
     for key, ingr in cook_book.items():
@@ -15,19 +16,13 @@ def get_shop_list_by_dishes(dishes, person_count):
     cook_book = create_cook_book()
     shop_list = {}
     for dish in dishes:
-        for ingredient in cook_book[dish]:
-            new_shop_list_item = ingredient
-            if 'quantity' in new_shop_list_item:
-                new_shop_list_item['quantity'] *= person_count
+        for ingridient in cook_book[dish]:
+            new_shop_list_item = ingridient
+            new_shop_list_item['quantity'] *= person_count
+            if new_shop_list_item['ingredient_name'] not in shop_list:
+                shop_list[new_shop_list_item['ingredient_name']] = new_shop_list_item
             else:
-                pass
-            if 'ingredient_name' in new_shop_list_item:
-                if new_shop_list_item['ingredient_name'] not in shop_list:
-                    shop_list[new_shop_list_item['ingredient_name']] = new_shop_list_item
-                else:
-                    shop_list[new_shop_list_item['ingredient_name']]['quantity'] += new_shop_list_item['quantity']
-            else:
-                pass
+                shop_list[new_shop_list_item['ingredient_name']]['quantity'] += new_shop_list_item['quantity']
     return shop_list
 
 
@@ -42,8 +37,6 @@ def create_shop_list():
     dishes = input('Введите блюда в расчёте на одного человека (через запятую): ').lower().split(', ')
     shop_list = get_shop_list_by_dishes(dishes, person_count)
     print_shop_list(shop_list)
-
-
 
 
 create_shop_list()
