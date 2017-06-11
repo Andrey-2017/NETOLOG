@@ -1,7 +1,7 @@
 import json
 
 
-def files_reading(file_name, cods):
+def files_reading(file_name, cods='cp1251'):
     with open(file_name, encoding=cods) as f:
         d = json.load(f)
     return d
@@ -21,7 +21,7 @@ def countries_reading(country):
         print('В новостях из Франции (хотя всё-таки из Кипра):')
         return d
     if country == 'i':
-        d = files_reading('newsit.json', 'cp1251')
+        d = files_reading('newsit.json')
         print('В новостях из Италии:')
         return d
 
