@@ -3,7 +3,7 @@ import os
 
 
 def translate_it(text_place, translate_place, to_lang, lang='ru'):
-    api_key = 'trnsl.1.1.20161025T233221Z.47834a66fd7895d0.a95fd4bfde5c1794fa433453956bd261eae80152'
+    api_key = 'trnsl.1.1.20170612T170042Z.bdd5e30d36b5bd11.178cf143f732fdd7cd4a51fc030cf1d6665aacb1'
     url = 'https://translate.yandex.net/api/v1.5/tr.json/translate'
     params = {
         "key": api_key,
