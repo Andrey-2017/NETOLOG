@@ -26,8 +26,7 @@ def countries_reading(country):
         return d
 
 
-def get_pure_words():
-    feed = countries_reading(country)
+def get_pure_words(feed):
     words = ''
     for descr in feed['rss']['channel']['item']:
         if type(descr['description']) == str:
@@ -46,8 +45,7 @@ def get_pure_words():
     return pure_words
 
 
-def repeat_massiv():
-    pure_words = get_pure_words()
+def repeat_massiv(pure_words):
     word_frequencies = dict()
     for word in pure_words:
         if word in word_frequencies:
@@ -57,8 +55,7 @@ def repeat_massiv():
     return word_frequencies
 
 
-def get_top_ten():
-    d = repeat_massiv()
+def get_top_ten(d):
     value_list = []
     key_list = []
     for value in d.values():
@@ -75,14 +72,16 @@ def get_top_ten():
 
 
 def result():
-    global country
     print('Для выяснения Топ-10 слов в новостях:')
     print('из Африки введите - a')
     print('из Кипра введите - c')
     print('из Франции введите - f')
     print('из Италии введите - i')
     country = input()
-    get_top_ten()
+    feed = countries_reading(country)
+    pure_words = get_pure_words(feed)
+    word_frequencies = repeat_massiv(pure_words)
+    get_top_ten(word_frequencies)
 
 
 result()
