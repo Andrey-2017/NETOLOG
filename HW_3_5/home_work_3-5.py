@@ -9,6 +9,7 @@ def temp(x):
         response = client.service.ConvertTemp(Temperature=t, FromUnit='degreeFahrenheit', ToUnit='degreeCelsius')
         return response
 
+
     list_temp = []
     with open(x) as f:
         for line in f:
@@ -24,6 +25,7 @@ def distance(y):
         client = osa.client.Client(url)
         response = client.service.ChangeLengthUnit(LengthValue=l, fromLengthUnit='Miles', toLengthUnit='Kilometers')
         return response
+
 
     list_di = []
     with open(y) as f:
@@ -49,12 +51,12 @@ def val(z):
         response = client.service.ConvertToNum(fromCurrency=val_name, toCurrency='RUB', amount=a, rounding=1)
         return response
 
+
     list_cu = []
     with open(z) as f:
         for line in f:
             line = (line.rstrip()).split(' ')
             list_cu.append(line[1:])
-    val_list = []
     am = 0
     for item in list_cu:
         am += curr_convert(int(item[0]), item[1])
