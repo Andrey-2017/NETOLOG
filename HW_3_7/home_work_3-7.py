@@ -16,12 +16,14 @@ auth_data = {
 token = 'AQAAAAAFd7GFAARjTMGJZHT_N0-9rIYCfdkWgdI'
 
 
-class YandexMetrika:
+class MetrikaBase:
     api_management_url = 'https://api-metrika.yandex.ru/management/v1/'
-    token = None
+    api_stat_url = 'https://api-metrika.yandex.ru/stat/v1/'
 
-    def __init__(self, token):
-        self.token = token
+
+    def __init__(self, tok):
+        self.token = tok
+
 
     def get_headers(self):
         return {
@@ -30,20 +32,56 @@ class YandexMetrika:
         }
 
 
-
+class YandexMetrika(MetrikaBase):
     def get_counters(self):
         headers = self.get_headers()
-        r = requests.get(self.api_management_url + 'counters', headers)
-        return r.json()
+        r = requests.get(self.api_management_url + 'counters', headers=headers)
+        return [Counter(self.token, counter['id']) for counter in r.json()['counters']]
+
+
+class Counter(MetrikaBase):
+    def __init__(self, tok, iden):
+        self.counter_id = iden
+        super().__init__(tok)
 
 
 
+    def get_visits(self):
+        headers = self.get_headers()
+        params = {
+            'id': self.counter_id,
+            'metrics': 'ym:s:visits'
+        }
+        r = requests.get(self.api_stat_url + 'data', params, headers=headers)
+        return r.json()['data']
 
 
+    def get_pageviews(self):
+        headers = self.get_headers()
+        params = {
+            'id': self.counter_id,
+            'metrics': 'ym:s:pageviews'
+        }
+        r = requests.get(self.api_stat_url + 'data', params, headers=headers)
+        return r.json()['data']
 
-class Counter:
+
+    def get_users(self):
+        headers = self.get_headers()
+        params = {
+            'id': self.counter_id,
+            'metrics': 'ym:s:users'
+        }
+        r = requests.get(self.api_stat_url + 'data', params, headers=headers)
+        return r.json()['data']
 
 
+ident = YandexMetrika(token)
+iden = ident.get_counters()
+for counter in iden:
+    print('Количество посетителей {0}'.format(counter.get_visits()))
+    print('Количество просмотров {0}'.format(counter.get_pageviews()))
+    print('Количество новых посетителей {0}'.format(counter.get_users()))
 
 
 
