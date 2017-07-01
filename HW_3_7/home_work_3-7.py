@@ -82,9 +82,3 @@ for counter in iden:
     print('Количество посетителей {0}'.format(counter.get_visits()))
     print('Количество просмотров {0}'.format(counter.get_pageviews()))
     print('Количество новых посетителей {0}'.format(counter.get_users()))
-
-
-
-
-
-
