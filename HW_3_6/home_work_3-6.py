@@ -1,4 +1,8 @@
 class Animal:
+    def __init__(self, name):
+        self.name = name
+
+
     common_name = 'домашнее животное'
     area = 'ферма'
     kind = 'скот и птица'
@@ -13,8 +17,6 @@ class Animal:
         
     
 class Cow(Animal):
-    def __init__(self, name):
-        self.name = name
     subarea = 'хлев'
     voice = 'му'
 
@@ -24,8 +26,6 @@ class Cow(Animal):
 
 
 class Pig(Animal):
-    def __init__(self, name):
-        self.name = name
     subarea = 'свинарник'
     voice = 'хрю'
 
@@ -35,8 +35,6 @@ class Pig(Animal):
 
 
 class Sheep(Animal):
-    def __init__(self, name):
-        self.name = name
     subarea = 'овчарня'
     voice = 'бе'
 
@@ -50,8 +48,6 @@ class Sheep(Animal):
 
 
 class Goat(Animal):
-    def __init__(self, name):
-        self.name = name
     subarea = 'сарай'
     voice = 'ме'
 
@@ -65,8 +61,6 @@ class Goat(Animal):
 
 
 class Duck(Animal):
-    def __init__(self, name):
-        self.name = name
     subarea = 'птичник'
     voice = 'кря'
 
@@ -76,8 +70,6 @@ class Duck(Animal):
     
     
 class Chicken(Animal):
-    def __init__(self, name):
-        self.name = name
     subarea = 'курятник'
     voice = 'ко-ко'
 
@@ -87,8 +79,6 @@ class Chicken(Animal):
     
 
 class Goose(Animal):
-    def __init__(self, name):
-        self.name = name
     subarea = 'гусятник'
     voice = 'га-га'
 
