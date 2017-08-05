@@ -1,4 +1,5 @@
 import requests
+import os
 import json
 from urllib.parse import urlencode
 
@@ -68,12 +69,16 @@ def alone_groups_list(friends_list, groups_list, token):
 
 def result():
     id = 5030613
-    token = '03317cedf04ba95b551d0ed42459f796cb744da5122209b63f8dde359289b0726f843bbbea3accf727476'
+    token = '718320db57b27ecf47c0848e34164e699b2788d8cb14cefa5a2975417cb2457cddf50cc2d5fd832074a1f'
     friends_list = get_friends_list(id, token)
     groups_list = get_groups_list(id, token)
     alone_group_list = alone_groups_list(friends_list, groups_list, token)
-    with open('groups.json', 'w') as f:
+    file_name = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'groups.json')
+    if os.path.exists(file_name):
+        os.remove(file_name)
+    with open(file_name, 'w') as f:
         json.dump(alone_group_list, f)
+    print('Программа закончила работу!')
 
 
 result()
