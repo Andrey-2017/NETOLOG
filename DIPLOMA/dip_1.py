@@ -18,7 +18,7 @@ from urllib.parse import urlencode
 # print('?'.join((authorize_url, urlencode(auth_data))))
 
 
-token = '67a98f40dcd731da98b4c362921881ab895424945cc20ad7a9b9805857b3ae1c26938b703fb1d41fe573f'
+token = '376cdb7b1efa953bb1264b3517d2ad7e4b075506e809b4244329d11ca2131dd97bea6c4acdd8af6a0189d'
 
 
 def get_list(meth, id=5030613):
@@ -48,7 +48,7 @@ def convert_friends_list(friends_list):
         s = ','.join(s)
         f_id.append(s)
     else:
-        k = 300
+        k = 353
         n = len(friends_list) // k
         M = [friends_list[k * i:k * (i + 1)] for i in range(n)]
         M.append(friends_list[k * n:])
@@ -70,6 +70,7 @@ def member_group_list(g_id, f_id):
         'user_ids': l
         }
         response = requests.get('https://api.vk.com/method/groups.isMember', params)
+        time.sleep(0.3)
         a += response.json()['response']
     return a
 
