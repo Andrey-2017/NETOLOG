@@ -18,7 +18,7 @@ from urllib.parse import urlencode
 # print('?'.join((authorize_url, urlencode(auth_data))))
 
 
-token = '67a98f40dcd731da98b4c362921881ab895424945cc20ad7a9b9805857b3ae1c26938b703fb1d41fe573f'
+token = '376cdb7b1efa953bb1264b3517d2ad7e4b075506e809b4244329d11ca2131dd97bea6c4acdd8af6a0189d'
 
 
 def get_list(id, meth):
@@ -49,7 +49,7 @@ def get_alone_groups_list(friends_list, groups_list, meth='groups.get'):
     i = 0
     for friend in friends_list:
         friend_groups_list = get_list(friend, meth)
-        time.sleep(0.5)
+        time.sleep(0.4)
         i +=1
         print('---')
         print('Осталось {0} обращений к API'.format(len(friends_list) - i))
