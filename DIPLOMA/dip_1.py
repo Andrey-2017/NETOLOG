@@ -21,7 +21,15 @@ from urllib.parse import urlencode
 token = '376cdb7b1efa953bb1264b3517d2ad7e4b075506e809b4244329d11ca2131dd97bea6c4acdd8af6a0189d'
 
 
-def get_list(meth, id=5030613):
+def get_list(meth, id):
+    if type(id) == str:
+        params = {
+            'access_token': token,
+            'v': '5.67',
+            'user_ids': id
+            }
+        response = requests.get('https://api.vk.com/method/users.get', params)
+        id = response.json()['response'][0]['id']
     if meth == 'groups.get':
         params = {
             'access_token': token,
@@ -76,8 +84,9 @@ def member_group_list(g_id, f_id):
 
 
 def result():
-    groups_list = get_list('groups.get')
-    friends_list = get_list('friends.get')
+    id = 'tim_leary'
+    groups_list = get_list('groups.get', id)
+    friends_list = get_list('friends.get', id)
     f_id = convert_friends_list(friends_list)
     group_list = [i['id'] for i in groups_list]
     m = 0
