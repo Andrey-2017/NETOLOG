@@ -21,7 +21,15 @@ from urllib.parse import urlencode
 token = '376cdb7b1efa953bb1264b3517d2ad7e4b075506e809b4244329d11ca2131dd97bea6c4acdd8af6a0189d'
 
 
-def get_list(id, meth):
+def get_list(meth, id):
+    if type(id) == str:
+        params = {
+            'access_token': token,
+            'v': '5.67',
+            'user_ids': id
+            }
+        response = requests.get('https://api.vk.com/method/users.get', params)
+        id = response.json()['response'][0]['id']
     if meth == 'groups.get':
         params = {
             'access_token': token,
@@ -48,7 +56,7 @@ def get_alone_groups_list(friends_list, groups_list, meth='groups.get'):
     user_alone_id_groups_list = set([l['id'] for l in groups_list])
     i = 0
     for friend in friends_list:
-        friend_groups_list = get_list(friend, meth)
+        friend_groups_list = get_list(meth, friend)
         time.sleep(0.4)
         i +=1
         print('---')
@@ -61,9 +69,9 @@ def get_alone_groups_list(friends_list, groups_list, meth='groups.get'):
 
 
 def result():
-    id = 5030613
-    friends_list = get_list(id, 'friends.get')
-    groups_list = get_list(id, 'groups.get')
+    id = 'tim_leary'
+    friends_list = get_list('friends.get', id)
+    groups_list = get_list('groups.get', id)
     alone_group_list = get_alone_groups_list(friends_list, groups_list)
     file_name = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'groups.json')
     if os.path.exists(file_name):
