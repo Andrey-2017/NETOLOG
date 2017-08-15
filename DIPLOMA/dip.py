@@ -18,33 +18,17 @@ from urllib.parse import urlencode
 # print('?'.join((authorize_url, urlencode(auth_data))))
 
 
-token = '376cdb7b1efa953bb1264b3517d2ad7e4b075506e809b4244329d11ca2131dd97bea6c4acdd8af6a0189d'
+token = 'e38c31b95bcb3f4789d7f8a6c9b6a8b9e2e7e61707f20c7d9672034e7f64298f4c010ea6bd8650b3134d1'
 
 
-def get_list(meth, id):
-    if type(id) == str:
-        params = {
-            'access_token': token,
-            'v': '5.67',
-            'user_ids': id
-            }
-        response = requests.get('https://api.vk.com/method/users.get', params)
-        id = response.json()['response'][0]['id']
-    if meth == 'groups.get':
-        params = {
-            'access_token': token,
-            'v': '5.67',
-            'user_id': id,
-            'extended': 1,
-            'fields': 'members_count'
-            }
-    else:
-        params = {
-            'access_token': token,
-            'v': '5.67',
-            'user_id': id
-            }
-    response = requests.get('https://api.vk.com/method/' + meth, params)
+def get_list(meth, id, param=(('extended', 1), ('fields', 'members_count'))):
+    params = {
+        'access_token': token,
+        'v': '5.67',
+        'user_id': id
+        }
+    params.update(param)
+    response = requests.post('https://api.vk.com/method/' + meth, params)
     try:
         _list = response.json()['response']['items']
     except KeyError:
@@ -70,7 +54,15 @@ def get_alone_groups_list(friends_list, groups_list, meth='groups.get'):
 
 def result():
     id = 'tim_leary'
-    friends_list = get_list('friends.get', id)
+    if type(id) == str:
+        params = {
+            'access_token': token,
+            'v': '5.67',
+            'user_ids': id
+            }
+        response = requests.get('https://api.vk.com/method/users.get', params)
+        id = response.json()['response'][0]['id']
+    friends_list = get_list('friends.get', id, param=())
     groups_list = get_list('groups.get', id)
     alone_group_list = get_alone_groups_list(friends_list, groups_list)
     file_name = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'groups.json')
