@@ -18,33 +18,17 @@ from urllib.parse import urlencode
 # print('?'.join((authorize_url, urlencode(auth_data))))
 
 
-token = '376cdb7b1efa953bb1264b3517d2ad7e4b075506e809b4244329d11ca2131dd97bea6c4acdd8af6a0189d'
+token = 'e38c31b95bcb3f4789d7f8a6c9b6a8b9e2e7e61707f20c7d9672034e7f64298f4c010ea6bd8650b3134d1'
 
 
-def get_list(meth, id):
-    if type(id) == str:
-        params = {
-            'access_token': token,
-            'v': '5.67',
-            'user_ids': id
-            }
-        response = requests.get('https://api.vk.com/method/users.get', params)
-        id = response.json()['response'][0]['id']
-    if meth == 'groups.get':
-        params = {
-            'access_token': token,
-            'v': '5.67',
-            'user_id': id,
-            'extended': 1,
-            'fields': 'members_count'
-            }
-    else:
-        params = {
-            'access_token': token,
-            'v': '5.67',
-            'user_id': id
-            }
-    response = requests.get('https://api.vk.com/method/' + meth, params)
+def get_list(meth, id, param=()):
+    params = {
+        'access_token': token,
+        'v': '5.67',
+        'user_id': id
+        }
+    params.update(param)
+    response = requests.post('https://api.vk.com/method/' + meth, params)
     _list = response.json()['response']['items']
     return _list
 
@@ -56,7 +40,7 @@ def convert_friends_list(friends_list):
         s = ','.join(s)
         f_id.append(s)
     else:
-        k = 353
+        k = 500
         n = len(friends_list) // k
         M = [friends_list[k * i:k * (i + 1)] for i in range(n)]
         M.append(friends_list[k * n:])
@@ -77,7 +61,7 @@ def member_group_list(g_id, f_id):
         'group_id': g_id,
         'user_ids': l
         }
-        response = requests.get('https://api.vk.com/method/groups.isMember', params)
+        response = requests.post('https://api.vk.com/method/groups.isMember', params)
         time.sleep(0.3)
         a += response.json()['response']
     return a
@@ -85,7 +69,15 @@ def member_group_list(g_id, f_id):
 
 def result():
     id = 'tim_leary'
-    groups_list = get_list('groups.get', id)
+    if type(id) == str:
+        params = {
+            'access_token': token,
+            'v': '5.67',
+            'user_ids': id
+            }
+        response = requests.get('https://api.vk.com/method/users.get', params)
+        id = response.json()['response'][0]['id']
+    groups_list = get_list('groups.get', id, param=[('extended', 1), ('fields', 'members_count')])
     friends_list = get_list('friends.get', id)
     f_id = convert_friends_list(friends_list)
     group_list = [i['id'] for i in groups_list]
