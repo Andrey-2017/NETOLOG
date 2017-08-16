@@ -18,19 +18,17 @@ from urllib.parse import urlencode
 # print('?'.join((authorize_url, urlencode(auth_data))))
 
 
-token = 'e38c31b95bcb3f4789d7f8a6c9b6a8b9e2e7e61707f20c7d9672034e7f64298f4c010ea6bd8650b3134d1'
+token = '3d8873921dfa091c2932d494fa5993478be108e73026fbc7ae190287d8512ed4019e425df3d3a1eb4b02d'
 
 
-def get_list(meth, id, param=()):
+def get_list(meth, param):
     params = {
         'access_token': token,
-        'v': '5.67',
-        'user_id': id
+        'v': '5.67'
         }
     params.update(param)
     response = requests.post('https://api.vk.com/method/' + meth, params)
-    _list = response.json()['response']['items']
-    return _list
+    return response.json()['response']
 
 
 def convert_friends_list(friends_list):
@@ -55,30 +53,18 @@ def convert_friends_list(friends_list):
 def member_group_list(g_id, f_id):
     a = []
     for l in f_id:
-        params = {
-        'access_token': token,
-        'v': '5.67',
-        'group_id': g_id,
-        'user_ids': l
-        }
-        response = requests.post('https://api.vk.com/method/groups.isMember', params)
+        b = get_list('groups.isMember', {'group_id': g_id, 'user_ids': l})
         time.sleep(0.3)
-        a += response.json()['response']
+        a += b
     return a
 
 
 def result():
     id = 'tim_leary'
     if type(id) == str:
-        params = {
-            'access_token': token,
-            'v': '5.67',
-            'user_ids': id
-            }
-        response = requests.get('https://api.vk.com/method/users.get', params)
-        id = response.json()['response'][0]['id']
-    groups_list = get_list('groups.get', id, param=[('extended', 1), ('fields', 'members_count')])
-    friends_list = get_list('friends.get', id)
+        id = get_list('users.get', {'user_ids': id})[0]['id']
+    groups_list = get_list('groups.get', {'user_id': id, 'extended': 1, 'fields': 'members_count'})['items']
+    friends_list = get_list('friends.get', {'user_id': id})['items']
     f_id = convert_friends_list(friends_list)
     group_list = [i['id'] for i in groups_list]
     m = 0
