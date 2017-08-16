@@ -70,7 +70,7 @@ def result():
     m = 0
     for g in groups_list:
         member_list = member_group_list(g['id'], f_id)
-        time.sleep(0.5)
+        time.sleep(0.4)
         m += 1
         print('---')
         print('Осталось {0} обращений к API'.format(len(groups_list) - m))
