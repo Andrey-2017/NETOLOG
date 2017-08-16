@@ -18,14 +18,13 @@ from urllib.parse import urlencode
 # print('?'.join((authorize_url, urlencode(auth_data))))
 
 
-token = 'e38c31b95bcb3f4789d7f8a6c9b6a8b9e2e7e61707f20c7d9672034e7f64298f4c010ea6bd8650b3134d1'
+token = '3d8873921dfa091c2932d494fa5993478be108e73026fbc7ae190287d8512ed4019e425df3d3a1eb4b02d'
 
 
-def get_list(meth, id, param=(('extended', 1), ('fields', 'members_count'))):
+def get_list(meth, param):
     params = {
         'access_token': token,
-        'v': '5.67',
-        'user_id': id
+        'v': '5.67'
         }
     params.update(param)
     response = requests.post('https://api.vk.com/method/' + meth, params)
@@ -40,7 +39,7 @@ def get_alone_groups_list(friends_list, groups_list, meth='groups.get'):
     user_alone_id_groups_list = set([l['id'] for l in groups_list])
     i = 0
     for friend in friends_list:
-        friend_groups_list = get_list(meth, friend)
+        friend_groups_list = get_list(meth, {'user_id': friend, 'extended': 1, 'fields': 'members_count'})
         time.sleep(0.4)
         i +=1
         print('---')
@@ -62,8 +61,8 @@ def result():
             }
         response = requests.get('https://api.vk.com/method/users.get', params)
         id = response.json()['response'][0]['id']
-    friends_list = get_list('friends.get', id, param=())
-    groups_list = get_list('groups.get', id)
+    friends_list = get_list('friends.get', {'user_id': id})
+    groups_list = get_list('groups.get', {'user_id': id, 'extended': 1, 'fields': 'members_count'})
     alone_group_list = get_alone_groups_list(friends_list, groups_list)
     file_name = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'groups.json')
     if os.path.exists(file_name):
